@@ -1,6 +1,6 @@
 import { Personne } from "./personne";
 
-export class Compte{
+export abstract class Compte{
     
     //Attributs
     private _Numero!: string;
@@ -20,7 +20,7 @@ export class Compte{
         return this._Solde;
     }
 
-    private set Solde(solde: number) {
+    set Solde(solde: number) {
         this._Solde = solde;
     }
 
@@ -43,5 +43,11 @@ export class Compte{
         if (montant > 0) {
             this._Solde += montant;
         }
+    }
+
+    protected abstract CalculInteret(): number;
+
+    Appliquerinteret() : void{
+        this._Solde += this.CalculInteret()
     }
 }

@@ -1,0 +1,9 @@
+{
+
+  "scripts": {
+    "start": "tsc && node distant/app.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
