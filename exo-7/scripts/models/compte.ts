@@ -1,7 +1,6 @@
 import { Personne } from "./personne";
 import { ICustomer } from "../interfaces/iCustomer";
 import { IBanker } from "../interfaces/iBanker";
-import {ArgumentOutOfRangeError} from "../errors/argumentOutOfRangeError";
 
 export abstract class Compte implements IBanker, ICustomer{
     
@@ -46,17 +45,11 @@ export abstract class Compte implements IBanker, ICustomer{
         if (montant > 0) {
             this._Solde -= montant;
         }
-        else{
-            throw new ArgumentOutOfRangeError("Vous devez avoir un montant supérieur a zéro pour effectuer un retrait")
-        }
     }
 
     Depot(montant : number) : void{
         if (montant > 0) {
             this._Solde += montant;
-        }
-        else{
-            throw new ArgumentOutOfRangeError("Vous devez avoir un montant supérieur a zéro pour effectuer un depôt")
         }
     }
 

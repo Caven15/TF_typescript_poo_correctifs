@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Compte = void 0;
-const argumentOutOfRangeError_1 = require("../errors/argumentOutOfRangeError");
 class Compte {
     constructor(numero, solde, titulaire) {
         this._Solde = 0;
@@ -33,16 +32,10 @@ class Compte {
         if (montant > 0) {
             this._Solde -= montant;
         }
-        else {
-            throw new argumentOutOfRangeError_1.ArgumentOutOfRangeError("Vous devez avoir un montant supérieur a zéro pour effectuer un retrait");
-        }
     }
     Depot(montant) {
         if (montant > 0) {
             this._Solde += montant;
-        }
-        else {
-            throw new argumentOutOfRangeError_1.ArgumentOutOfRangeError("Vous devez avoir un montant supérieur a zéro pour effectuer un depôt");
         }
     }
     AppliquerInteret() {

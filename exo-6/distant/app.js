@@ -1,44 +1,52 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const banque_1 = require("./models/banque");
+const argumentOutOfRangeError_1 = require("./errors/argumentOutOfRangeError");
+const InvalidOperationError_1 = require("./errors/InvalidOperationError");
 const courant_1 = require("./models/courant");
 const epargne_1 = require("./models/epargne");
 const personne_1 = require("./models/personne");
-const personne = new personne_1.Personne("Doe", "Jhon", new Date("1986-05-16"));
-console.log("Test affichage personne :");
-console.log(`Nom : ${personne.Nom}`);
-console.log(`Nom : ${personne.Prenom}`);
-console.log(`Nom : ${personne.DateNaissance}`);
-const courant = new courant_1.Courant("0000-0000-0001", 250, personne, 500);
-const epargne = new epargne_1.Epargne("0000-0000-0002", 200, personne);
-const banque = new banque_1.Banque("Belfius");
-banque.Ajouter(courant);
-banque.Ajouter(epargne);
-// console.log("Appication des intérêts");
-// courant.AppliquerInteret() // Applique le polylorphisme
-// courant2.AppliquerInteret() // Applique le polylorphisme
-// epargne.AppliquerInteret() // Applique le polylorphisme
-// console.log(`Pour un compte courant disposant d"un solde positif de 500 € voici le résultat après application d'intérêt : ${courant.Solde} €`);
-// console.log(`Pour un compte courant disposant d"un solde négatif de 500 € voici le résultat après application d'intérêt : ${courant2.Solde} €`);
-// console.log(`Pour un compte epargne disposant d"un solde positif de 500 € voici le résultat après application d'intérêt : ${epargne.Solde} €`);
-const epargneClient = epargne;
-// Le client effectue des opérations
-console.log(`Je suis le client  qui effectue un depot de 500 € sur mon compte epargne`);
-epargneClient.Depot(500);
-console.log(`Je suis le client  qui effectue un retrait de 500 € sur mon compte epargne`);
-epargneClient.Retrait(300);
-console.log(`Le solde du compte epargne client est présent de ${epargneClient.Solde}`);
-// Le banquier effectuer
-const epargneBanquier = epargne;
-console.log(`Je suis le banquier qui consulte les informations du client`);
-// Versement du salaire
-epargneBanquier.Depot(1500);
-// Domiciliation pour internet
-epargneBanquier.Retrait(75);
-// Aplpique des intérets a une date donné exemeple => début de chaque mois
-epargneBanquier.AppliquerInteret();
-// Consulte les informations du titulaire
-console.log(`Nom : ${epargneBanquier.Titulaire.Nom}`);
-console.log(`Prenom : ${epargneBanquier.Titulaire.Prenom}`);
-// le banquier regarde le solde après application des intérets
-console.log(`Solde du compte du client vus par le banquier : ${epargneBanquier.Solde} €`);
+try {
+    const personne = new personne_1.Personne("Doe", "John", new Date("1986-05-16"));
+    const courant = new courant_1.Courant("0000-0000-0001", 500, personne, 500);
+    const epargne = new epargne_1.Epargne("0000-0000-0003", 500, personne);
+    // Essai de retrait avec gestion des erreurs
+    try {
+        courant.Retrait(-500); // Devrait lever une ArgumentOutOfRangeError
+    }
+    catch (error) {
+        if (error instanceof argumentOutOfRangeError_1.ArgumentOutOfRangeError) {
+            console.error("Erreur : Le montant de retrait doit être positif.");
+        }
+        else {
+            console.error("Erreur inconnue lors du retrait :", error);
+        }
+    }
+    // Essai de dépôt avec gestion des erreurs
+    try {
+        courant.Depot(-500); // Devrait lever une ArgumentOutOfRangeError
+    }
+    catch (error) {
+        if (error instanceof argumentOutOfRangeError_1.ArgumentOutOfRangeError) {
+            console.error("Erreur : Le montant de dépôt doit être positif.");
+        }
+        else {
+            console.error("Erreur inconnue lors du dépôt :", error);
+        }
+    }
+    // Essai de modification de la ligne de crédit avec gestion des erreurs
+    try {
+        courant.LigneDeCredit = -500; // Devrait lever une InvalidOperationError
+    }
+    catch (error) {
+        if (error instanceof InvalidOperationError_1.InvalidOperationError) {
+            console.error("Erreur : La ligne de crédit ne peut pas être négative.");
+        }
+        else {
+            console.error("Erreur inconnue lors de la modification de la ligne de crédit :", error);
+        }
+    }
+}
+catch (error) {
+    // Gestion des erreurs globales
+    console.error("Erreur critique : Une exception inattendue est survenue :", error);
+}
